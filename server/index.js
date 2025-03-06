@@ -98,6 +98,12 @@ async function run() {
       res.send(result);
     });
 
+    // get all plants from db
+    app.get("/plants", async (req, res) => {
+      const result = await plantsCollection.find().toArray();
+      res.send(result);
+    });
+
     // Logout
     app.get("/logout", async (req, res) => {
       try {
