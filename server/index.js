@@ -55,7 +55,8 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     const db = client.db("plantNet"); // database
-    const usersCollection = db.collection("users"); // collection
+    const usersCollection = db.collection("users"); // users collection
+    const plantsCollection = db.collection("plants"); // plant collection
 
     // save or update a user in db
     app.post("/users/:email", async (req, res) => {
@@ -89,6 +90,14 @@ async function run() {
         })
         .send({ success: true });
     });
+
+    // save a plant data in db
+    app.post("/plants", verifyToken, async (req, res) => {
+      const plant = req.body;
+      const result = await plantsCollection.insertOne(plant);
+      res.send(result);
+    });
+
     // Logout
     app.get("/logout", async (req, res) => {
       try {
