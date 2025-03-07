@@ -2,10 +2,10 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
 const Card = ({ plant }) => {
-  const { name, category, quantity, price, image } = plant || {};
+  const { name, category, quantity, price, image, _id } = plant || {};
   return (
     <Link
-      to={`/plant/1`}
+      to={`/plant/${_id}`}
       className="col-span-1 cursor-pointer group shadow-xl p-3 rounded-xl"
     >
       <div className="flex flex-col gap-2 w-full">

@@ -3,8 +3,8 @@ import { TbFidgetSpinner } from "react-icons/tb";
 
 const AddPlantForm = ({
   handleSubmit,
-  uploadButtonText,
-  setUploadButtonText,
+  uploadImage,
+  setUploadImage,
   loading,
 }) => {
   return (
@@ -96,7 +96,10 @@ const AddPlantForm = ({
                   <label>
                     <input
                       onChange={(e) => {
-                        setUploadButtonText(e.target.files[0]);
+                        setUploadImage({
+                          image: e.target.files[0],
+                          url: URL.createObjectURL(e.target.files[0]),
+                        });
                       }}
                       className="text-sm cursor-pointer w-36 hidden"
                       type="file"
@@ -106,14 +109,17 @@ const AddPlantForm = ({
                       hidden
                     />
                     <div className="bg-lime-500 text-white border border-gray-300 rounded font-semibold cursor-pointer p-1 px-3 hover:bg-lime-500">
-                      {uploadButtonText.name}
+                      {uploadImage?.image?.name}
                     </div>
                   </label>
                 </div>
               </div>
             </div>
-            {uploadButtonText.size && (
-              <p>Image Size: {uploadButtonText.size} Bytes</p>
+            {uploadImage && uploadImage?.image?.size && (
+              <div className="flex gap-10 items-center justify-center">
+                <img src={uploadImage?.url} className="w-20" alt="" />
+                <p>Image Size: {uploadImage?.image?.size} Bytes</p>
+              </div>
             )}
 
             {/* Submit Button */}
@@ -136,9 +142,9 @@ const AddPlantForm = ({
 };
 AddPlantForm.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
-  uploadButtonText: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
+  uploadImage: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
     .isRequired,
-  setUploadButtonText: PropTypes.func.isRequired,
+  setUploadImage: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
 };
 
