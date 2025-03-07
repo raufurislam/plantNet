@@ -104,6 +104,14 @@ async function run() {
       res.send(result);
     });
 
+    // get a plant by id
+    app.get("/plants/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await plantsCollection.findOne(query);
+      res.send(result);
+    });
+
     // Logout
     app.get("/logout", async (req, res) => {
       try {
