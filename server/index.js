@@ -41,7 +41,8 @@ const verifyToken = async (req, res, next) => {
   });
 };
 
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.xi11k.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
+// const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.xi11k.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.xi11k.mongodb.net/plantNet?retryWrites=true&w=majority&appName=Cluster0`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -57,6 +58,7 @@ async function run() {
     const db = client.db("plantNet"); // database
     const usersCollection = db.collection("users"); // users collection
     const plantsCollection = db.collection("plants"); // plant collection
+    const ordersCollection = db.collection("orders"); // orders collection
 
     // save or update a user in db
     app.post("/users/:email", async (req, res) => {
@@ -111,6 +113,17 @@ async function run() {
       const result = await plantsCollection.findOne(query);
       res.send(result);
     });
+
+    // Save order data in db
+    app.post("/order", verifyToken, async (req, res) => {
+      const orderInfo = req.body;
+      console.log(orderInfo);
+      const result = await ordersCollection.insertOne(orderInfo);
+      res.send(result);
+    });
+
+    // Manage plant quantity
+    app.patch("", verifyToken, async (req, res) => {});
 
     // Logout
     app.get("/logout", async (req, res) => {

@@ -8,7 +8,7 @@ const Card = ({ plant }) => {
       to={`/plant/${_id}`}
       className="col-span-1 cursor-pointer group shadow-xl p-3 rounded-xl"
     >
-      <div className="flex flex-col gap-2 w-full">
+      <div className="w-full group-hover:scale-105 h-52 object-cover rounded-t-xl mb-4">
         <div
           className="
               aspect-square 

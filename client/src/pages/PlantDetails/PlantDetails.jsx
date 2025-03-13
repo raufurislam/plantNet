@@ -29,20 +29,12 @@ const PlantDetails = () => {
 
   if (isLoading) return <LoadingSpinner></LoadingSpinner>;
 
-  // category
-  // description
-  // image
-  // name
-  // price
-  // quantity
-  // seller
-  // :
+  // seller:
   // {name: 'raufur@gmail.com', image: 'https://i.ibb.co.com/TqvqCH4M/IMG-20230322-150906-601.jpg', email: 'raufur@gmail.com'}
-  // _id
 
   const { category, description, image, name, price, quantity, seller } = plant;
 
-  console.log(plant);
+  // console.log(plant);
 
   const closeModal = () => {
     setIsOpen(false);
@@ -127,7 +119,11 @@ const PlantDetails = () => {
           </div>
           <hr className="my-6" />
 
-          <PurchaseModal closeModal={closeModal} isOpen={isOpen} />
+          <PurchaseModal
+            plant={plant}
+            closeModal={closeModal}
+            isOpen={isOpen}
+          />
         </div>
       </div>
     </Container>
