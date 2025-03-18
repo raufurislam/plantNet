@@ -123,7 +123,16 @@ async function run() {
     });
 
     // Manage plant quantity
-    app.patch("", verifyToken, async (req, res) => {});
+    app.patch("/plants/quantity/:id", verifyToken, async (req, res) => {
+      const id = req.params.id;
+      const { quantityToUpdate } = req.body;
+      const filter = { _id: new ObjectId(id) };
+      let updateDoc = {
+        $inc: { quantity: -quantityToUpdate },
+      };
+      const result = await plantsCollection.updateOne(filter, updateDoc);
+      res.send(result);
+    });
 
     // Logout
     app.get("/logout", async (req, res) => {

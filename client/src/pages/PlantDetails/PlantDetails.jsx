@@ -29,9 +29,6 @@ const PlantDetails = () => {
 
   if (isLoading) return <LoadingSpinner></LoadingSpinner>;
 
-  // seller:
-  // {name: 'raufur@gmail.com', image: 'https://i.ibb.co.com/TqvqCH4M/IMG-20230322-150906-601.jpg', email: 'raufur@gmail.com'}
-
   const { category, description, image, name, price, quantity, seller } = plant;
 
   // console.log(plant);
@@ -114,6 +111,7 @@ const PlantDetails = () => {
               <Button
                 onClick={() => setIsOpen(true)}
                 label={quantity > 0 ? "Purchase" : "Out of stock"}
+                disabled={quantity <= 0}
               />
             </div>
           </div>
@@ -123,6 +121,7 @@ const PlantDetails = () => {
             plant={plant}
             closeModal={closeModal}
             isOpen={isOpen}
+            refetch={refetch}
           />
         </div>
       </div>

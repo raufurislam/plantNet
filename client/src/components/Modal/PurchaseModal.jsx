@@ -10,9 +10,9 @@ import { Fragment, useState } from "react";
 import Button from "../Shared/Button/Button";
 import useAuth from "../../hooks/useAuth";
 import { toast } from "react-hot-toast";
-import useAxiosSecure, { axiosSecure } from "./../../hooks/useAxiosSecure";
+import useAxiosSecure from "./../../hooks/useAxiosSecure";
 
-const PurchaseModal = ({ closeModal, isOpen, plant }) => {
+const PurchaseModal = ({ closeModal, isOpen, plant, refetch }) => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const { _id, category, name, price, quantity, seller } = plant;
@@ -38,8 +38,8 @@ const PurchaseModal = ({ closeModal, isOpen, plant }) => {
       setTotalQuantity(quantity);
       return toast.error("Quantity exceeds available stock!");
     }
-    if (value < 0) {
-      // setTotalQuantity(1);
+    if (value < 1) {
+      setTotalQuantity(1);
       return toast.error("Quantity cannot be less than 1!");
     }
     setTotalQuantity(value);
@@ -51,11 +51,21 @@ const PurchaseModal = ({ closeModal, isOpen, plant }) => {
 
   const handlePurchase = async () => {
     console.table(purchaseInfo);
+    if (totalQuantity < 1 || quantity < 1) {
+      return toast.error("Product is out of stock!");
+    }
 
     // post request to purchase
     try {
+      // save data in db
       await axiosSecure.post("/order", purchaseInfo);
+
+      // Decrease quantity from plant collection
+      axiosSecure.patch(`/plants/quantity/${_id}`, {
+        quantityToUpdate: totalQuantity,
+      });
       toast.success("Order Successfull");
+      refetch();
     } catch (err) {
       console.log(err);
     } finally {
