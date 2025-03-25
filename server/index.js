@@ -134,6 +134,52 @@ async function run() {
       res.send(result);
     });
 
+    // get all orders for a specific customers
+    app.get("/customer-orders/:email", verifyToken, async (req, res) => {
+      const email = req.params.email;
+      const query = { "customer.email": email };
+      // const result = await ordersCollection.find(query).toArray();
+      const result = await ordersCollection
+        .aggregate([
+          {
+            $match: query, // match specific customer data only by email
+          },
+          {
+            $addFields: {
+              plantId: { $toObjectId: "$plantId" }, // convert plantId string field to objectId field
+            },
+          },
+          {
+            $lookup: {
+              // go to a different collection and look for data
+              from: "plants", // collection name
+              localField: "plantId", //local data that you want to match
+              foreignField: "_id", // foreign field name of that same data
+              as: "plants", //return the data as plants array {array naming}
+            },
+          },
+          {
+            $unwind: "$plants", // unwind lookup result, return without array
+          },
+          {
+            $addFields: {
+              // add these fields in order object
+              name: "$plants.name",
+              image: "$plants.image",
+              category: "$plants.category",
+            },
+          },
+          {
+            // remove plants object property from order object
+            $project: {
+              plants: 0,
+            },
+          },
+        ])
+        .toArray();
+      res.send(result);
+    });
+
     // Logout
     app.get("/logout", async (req, res) => {
       try {

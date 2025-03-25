@@ -14,7 +14,7 @@ const PlantDetails = () => {
   let [isOpen, setIsOpen] = useState(false);
 
   const {
-    data: plant = [],
+    data: plant = {},
     isLoading,
     refetch,
   } = useQuery({
