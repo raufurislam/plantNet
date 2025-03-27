@@ -180,6 +180,19 @@ async function run() {
       res.send(result);
     });
 
+    // get all orders for a specific customer
+    app.delete("/orders/:id", verifyToken, async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const status = await ordersCollection.findOne(query);
+      if (ordersCollection.status === "delivered")
+        return res
+          .status(409)
+          .send("Cannot cancel once the products is deliverd");
+      const result = await ordersCollection.deleteOne(query);
+      res.send(result);
+    });
+
     // Logout
     app.get("/logout", async (req, res) => {
       try {
