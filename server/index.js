@@ -189,8 +189,8 @@ async function run() {
     app.delete("/orders/:id", verifyToken, async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
-      const status = await ordersCollection.findOne(query);
-      if (ordersCollection.status === "delivered")
+      const order = await ordersCollection.findOne(query);
+      if (order.status === "Delivered")
         return res
           .status(409)
           .send("Cannot cancel once the products is deliverd");

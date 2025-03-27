@@ -32,7 +32,7 @@ const PurchaseModal = ({ closeModal, isOpen, plant, refetch }) => {
     quantity: totalQuantity,
     seller: seller?.email,
     address: "",
-    status: "pending",
+    status: "Pending",
   });
 
   const handleQuantity = (value) => {
