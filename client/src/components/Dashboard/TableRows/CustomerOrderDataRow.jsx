@@ -4,7 +4,8 @@ import DeleteModal from "../../Modal/DeleteModal";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 const CustomerOrderDataRow = ({ orderData, refetch }) => {
   const axiosSecure = useAxiosSecure();
-  const { name, image, category, price, quantity, _id, status } = orderData;
+  const { name, image, category, price, quantity, _id, status, plantId } =
+    orderData;
   let [isOpen, setIsOpen] = useState(false);
   const closeModal = () => setIsOpen(false);
 
@@ -13,6 +14,11 @@ const CustomerOrderDataRow = ({ orderData, refetch }) => {
     try {
       // fetch delete request
       await axiosSecure.delete(`/orders/${_id}`);
+
+      await axiosSecure.patch(`/plants/quantity/${plantId}`, {
+        quantityToUpdate: quantity,
+        status: "increase",
+      });
       // call refetch to refresh ui (fetch orders data again)
       refetch();
     } catch (err) {

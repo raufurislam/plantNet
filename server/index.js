@@ -125,11 +125,16 @@ async function run() {
     // Manage plant quantity
     app.patch("/plants/quantity/:id", verifyToken, async (req, res) => {
       const id = req.params.id;
-      const { quantityToUpdate } = req.body;
+      const { quantityToUpdate, status } = req.body;
       const filter = { _id: new ObjectId(id) };
       let updateDoc = {
         $inc: { quantity: -quantityToUpdate },
       };
+      if (status === "increase") {
+        updateDoc = {
+          $inc: { quantity: quantityToUpdate },
+        };
+      }
       const result = await plantsCollection.updateOne(filter, updateDoc);
       res.send(result);
     });

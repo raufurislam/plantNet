@@ -19,7 +19,7 @@ const MyOrders = () => {
       return data;
     },
   });
-  console.log(orders);
+  // console.log(orders);
 
   if (isLoading) return <LoadingSpinner></LoadingSpinner>;
 

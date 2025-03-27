@@ -65,6 +65,7 @@ const PurchaseModal = ({ closeModal, isOpen, plant, refetch }) => {
       // Decrease quantity from plant collection
       axiosSecure.patch(`/plants/quantity/${_id}`, {
         quantityToUpdate: totalQuantity,
+        status: "decrease",
       });
       toast.success("Order Successfull");
       refetch();
