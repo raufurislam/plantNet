@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import { useState } from "react";
 import DeleteModal from "../../Modal/DeleteModal";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import { toast } from "react-hot-toast";
 const CustomerOrderDataRow = ({ orderData, refetch }) => {
   const axiosSecure = useAxiosSecure();
   const { name, image, category, price, quantity, _id, status, plantId } =
@@ -21,8 +22,10 @@ const CustomerOrderDataRow = ({ orderData, refetch }) => {
       });
       // call refetch to refresh ui (fetch orders data again)
       refetch();
+      toast.success("Ordered canceled");
     } catch (err) {
       console.log(err);
+      toast.error(err.response.data);
     } finally {
       closeModal();
     }
@@ -80,8 +83,17 @@ const CustomerOrderDataRow = ({ orderData, refetch }) => {
 };
 
 CustomerOrderDataRow.propTypes = {
-  order: PropTypes.object,
-  refetch: PropTypes.func,
+  orderData: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    image: PropTypes.string.isRequired,
+    category: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+    quantity: PropTypes.number.isRequired,
+    status: PropTypes.string.isRequired,
+    plantId: PropTypes.string.isRequired,
+  }).isRequired,
+  refetch: PropTypes.func.isRequired,
 };
 
 export default CustomerOrderDataRow;
