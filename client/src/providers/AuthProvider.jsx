@@ -52,19 +52,9 @@ const AuthProvider = ({ children }) => {
   // onAuthStateChange
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      console.log("CurrentUser-->", currentUser?.email);
+      console.log("CurrentUser-->", currentUser);
       if (currentUser?.email) {
         setUser(currentUser);
-
-        // Save user info in db
-        await axios.post(
-          `${import.meta.env.VITE_API_URL}/users/${currentUser?.email}`,
-          {
-            name: currentUser?.displayName,
-            image: currentUser?.photoURL,
-            email: currentUser.email,
-          }
-        );
 
         // Get JWT token
         await axios.post(

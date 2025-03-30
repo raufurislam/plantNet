@@ -9,13 +9,15 @@ const Statistics = () => {
   if (isLoading) return <LoadingSpinner></LoadingSpinner>;
   if (role === "customer")
     return <Navigate to="/dashboard/my-orders"></Navigate>;
+  if (role === "seller")
+    return <Navigate to="/dashboard/my-inventory"></Navigate>;
 
   return (
     <div>
       <Helmet>
         <title>Dashboard</title>
       </Helmet>
-      <AdminStatistics />
+      {role}
     </div>
   );
 };

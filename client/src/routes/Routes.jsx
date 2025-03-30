@@ -65,7 +65,9 @@ export const router = createBrowserRouter([
         path: "my-inventory",
         element: (
           <PrivateRoute>
-            <MyInventory />
+            <SellerRoute>
+              <MyInventory />
+            </SellerRoute>
           </PrivateRoute>
         ),
       },
@@ -97,7 +99,13 @@ export const router = createBrowserRouter([
       },
       {
         path: "manage-orders",
-        element: <ManageOrders />,
+        element: (
+          <PrivateRoute>
+            <AdminRoute>
+              <ManageOrders />
+            </AdminRoute>
+          </PrivateRoute>
+        ),
       },
     ],
   },
