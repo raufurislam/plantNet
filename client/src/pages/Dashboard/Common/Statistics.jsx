@@ -17,7 +17,7 @@ const Statistics = () => {
       <Helmet>
         <title>Dashboard</title>
       </Helmet>
-      {role}
+      {role === "admin" && <AdminStatistics></AdminStatistics>}
     </div>
   );
 };
